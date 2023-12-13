@@ -8,7 +8,7 @@ public class RecipeScrapperTest extends Baseutils {
 
 	
 	@Test
-	public void DiebiaticRecipe() throws Throwable
+	public void DiabeticRecipeTest() throws Throwable
 	{
 		
 		landingpage.clickRecipeButton();
