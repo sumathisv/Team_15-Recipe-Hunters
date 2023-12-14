@@ -34,7 +34,7 @@ public class DiabeticRecipePage extends BasePage {
 	}
 	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='maincontent']/div/div/div[@style='text-align:right;padding-bottom:15px;']/a")})List<WebElement> gotopg;
-	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@class='rcc_recipecard']/div[3]/span/a")})List<WebElement> recipecards;
+	@FindBys(value = {@FindBy(how=How.XPATH,using="//span[@class='rcc_recipename']")})List<WebElement> recipecards;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='rcpinglist']/div/span[@itemprop=\"recipeIngredient\"]/a/span")})List<WebElement> ingredientList;
 	
 	String pgcountDString="/recipes-for-indian-diabetic-recipes-370?pageindex=";
@@ -56,13 +56,16 @@ public class DiabeticRecipePage extends BasePage {
 			WebElement testclick= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+pgcountDString+pagenumber+"\""+"]"));
 			Thread.sleep(2000);
 			testclick.click();
+			int j=0;
 			try {
-			while(true)
-			{	pagenumber=pagenumber+1;
+			while(j<2)
+			{	
+				j++;
+				pagenumber=pagenumber+1;
 			
 			/*Click each recipe and compare with eliminated list*/
 			List<String> eleminatelst=Baseutils.readExcelEliminate("C:\\Users\\Viru\\git\\Team_15-Recipe-Hunters\\src\\test\\resources\\EliminatedInputData\\Eliminatelist.xlsx",0);
-			System.out.println("Recipecards size"+recipecards.size());
+			//System.out.println("Recipecards size"+recipecards.size());
 			
 				//recipecards loop checking for 1 card
 			for(int i=0;i<1;i++)
