@@ -1,22 +1,24 @@
 package com.utils;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.poi.sl.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 
-import com.pageObject.BasePage;
 import com.pageObject.LandingPage;
-import com.utils.ConfigReader;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -65,10 +67,7 @@ public class Baseutils {
 	
     @BeforeMethod
 	public  static LandingPage launchApplication() throws Throwable {
-		// Get browser Type from config file
-		
-		
-		
+		// Get browser Type from config file		
 		// Initialize driver from driver factory
 		
 		 driver=initializeDrivers();
@@ -83,4 +82,43 @@ public class Baseutils {
 		//driver.close();
 	//}
 	
+   /* public static int  SearchPageCount(List<WebElement> ele,String s) throws InterruptedException, IOException
+	{  
+		int pagenumber=Integer.parseInt(ele.get(0).getText());
+		WebElement testclick= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+s+pagenumber+"\""+"]"));
+		Thread.sleep(2000);
+		testclick.click();
+		try {
+		while(true)
+		{	pagenumber=pagenumber+1;
+			WebElement testclick1= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+s+pagenumber+"\""+"]"));
+				if(testclick1.isDisplayed())
+				{	Thread.sleep(1000);
+				   testclick1.click();									
+				}
+				else
+					break;
+		}					
+		}
+		catch (org.openqa.selenium.NoSuchElementException e) {  	  }
+		return pagenumber;
+		}*/
+    
+    
+    //Input Excel reader
+   public static List<String> readExcelEliminate(String filePath,int cellno) throws IOException {
+	    List<String> data = new ArrayList<>();
+
+	    try (FileInputStream fis = new FileInputStream(filePath);
+	         Workbook workbook = new XSSFWorkbook(fis)) {
+	        	org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0); // Assuming you are working with the first sheet
+	        	for (Row row : sheet) {data.add(row.getCell(cellno).toString());
+	            }	          	   
+	    }
+	    return data;
+	}
+	
+    
+    
+    
 }

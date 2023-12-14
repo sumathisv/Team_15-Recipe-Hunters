@@ -1,20 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-12-13T10:01:00 CST" name="Default suite" finished-at="2023-12-13T10:01:56 CST" duration-ms="55685">
+  <suite started-at="2023-12-14T01:43:36 GMT-05:00" name="Default suite" finished-at="2023-12-14T01:45:35 GMT-05:00" duration-ms="118569">
     <groups>
     </groups>
-    <test started-at="2023-12-13T10:01:00 CST" name="Default test" finished-at="2023-12-13T10:01:56 CST" duration-ms="55685">
+    <test started-at="2023-12-14T01:43:36 GMT-05:00" name="Default test" finished-at="2023-12-14T01:45:35 GMT-05:00" duration-ms="118569">
       <class name="com.test.RecipeScrapperTest">
-        <test-method is-config="true" signature="launchApplication()[pri:0, instance:com.test.RecipeScrapperTest@557caf28]" started-at="2023-12-13T10:01:00 CST" name="launchApplication" finished-at="2023-12-13T10:01:31 CST" duration-ms="31134" status="PASS">
+        <test-method is-config="true" signature="launchApplication()[pri:0, instance:com.test.RecipeScrapperTest@3b0fe47a]" started-at="2023-12-14T01:43:36 GMT-05:00" name="launchApplication" finished-at="2023-12-14T01:44:20 GMT-05:00" duration-ms="43725" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- launchApplication -->
-        <test-method signature="DiebiaticRecipe()[pri:0, instance:com.test.RecipeScrapperTest@557caf28]" started-at="2023-12-13T10:01:31 CST" name="DiebiaticRecipe" finished-at="2023-12-13T10:01:56 CST" duration-ms="24412" status="PASS">
+        <test-method signature="DiabeticRecipeTest()[pri:0, instance:com.test.RecipeScrapperTest@3b0fe47a]" started-at="2023-12-14T01:44:20 GMT-05:00" name="DiabeticRecipeTest" finished-at="2023-12-14T01:45:35 GMT-05:00" duration-ms="74541" status="FAIL">
+          <exception class="java.lang.IndexOutOfBoundsException">
+            <message>
+              <![CDATA[Index 0 out of bounds for length 0]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:266)
+at java.base/java.util.Objects.checkIndex(Objects.java:361)
+at java.base/java.util.ArrayList.get(ArrayList.java:427)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.openqa.selenium.support.pagefactory.internal.LocatingElementListHandler.invoke(LocatingElementListHandler.java:39)
+at jdk.proxy2/jdk.proxy2.$Proxy36.get(Unknown Source)
+at com.pageObject.DiabeticRecipePage.getrecipecard(DiabeticRecipePage.java:70)
+at com.test.RecipeScrapperTest.DiabeticRecipeTest(RecipeScrapperTest.java:19)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:227)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:957)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:200)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:848)
+at org.testng.TestRunner.run(TestRunner.java:621)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
+at org.testng.SuiteRunner.run(SuiteRunner.java:336)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1280)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1200)
+at org.testng.TestNG.runSuites(TestNG.java:1114)
+at org.testng.TestNG.run(TestNG.java:1082)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.IndexOutOfBoundsException -->
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- DiebiaticRecipe -->
+        </test-method> <!-- DiabeticRecipeTest -->
       </class> <!-- com.test.RecipeScrapperTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
