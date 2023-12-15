@@ -150,7 +150,7 @@ public class Baseutils {
    
    //Excel into Write
    
-   public static void WriteExcel(String ExcelSheetName,List<String> recipefinallst) throws IOException
+   public static void WriteExcel(String ExcelSheetName,ArrayList<ArrayList<String>> recipefinallst) throws IOException
 	{
 		XSSFWorkbook workbook = new XSSFWorkbook();
 		XSSFSheet sheet = workbook.createSheet(ExcelSheetName);
@@ -175,26 +175,18 @@ public class Baseutils {
 		sheet.getRow(0).createCell(8).setCellValue("Nutrient values");
 		sheet.getRow(0).createCell(9).setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
 		sheet.getRow(0).createCell(10).setCellValue("Recipe URL");	
+		sheet.getRow(0).createCell(11).setCellValue("To Add");	
 		}
 		int rowno=rows+1;
 
 		for(int i = 0;i<recipefinallst.size(); i++)
 		{
+			ArrayList<String> arraylist=new ArrayList<String>();
+			arraylist=recipefinallst.get(i);
 			XSSFRow row=sheet.createRow(rowno++);
-			row.createCell(0).setCellValue(recipefinallst.get(0));
-			row.createCell(1).setCellValue(recipefinallst.get(1));
-			row.createCell(2).setCellValue(recipefinallst.get(2));
-			row.createCell(3).setCellValue(recipefinallst.get(3));
-			row.createCell(4).setCellValue(recipefinallst.get(4));
-			row.createCell(5).setCellValue(recipefinallst.get(5));
-			row.createCell(6).setCellValue(recipefinallst.get(6));
-			row.createCell(7).setCellValue(recipefinallst.get(7));
-			row.createCell(8).setCellValue(recipefinallst.get(8));
-			row.createCell(9).setCellValue(recipefinallst.get(9));
-			row.createCell(10).setCellValue(recipefinallst.get(10));
-			
-			
-			
+			for(int j=0;j<arraylist.size();j++) {
+			row.createCell(j).setCellValue(arraylist.get(j));
+			}
 		}
 		
 		FileOutputStream FOS = new FileOutputStream(".\\src\\test\\resources\\"+ExcelSheetName+".xlsx");

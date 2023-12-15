@@ -46,7 +46,8 @@ public class DiabeticRecipePage extends BasePage {
 
 	String pgcountDString=ConfigReader.Diebatichref();
 	List<String> result=new ArrayList<String>();
-	ArrayList<String> recipeinfo = new ArrayList<String>();
+	
+	 ArrayList<ArrayList<String> > recipeslst = new ArrayList<ArrayList<String>>(); 
 	List<String> eleminatelst=new ArrayList<String>();
 	List<String> foodcategorylst=new ArrayList<String>();
 	List<String> resultfoodcategory=new ArrayList<String>();
@@ -57,6 +58,9 @@ public class DiabeticRecipePage extends BasePage {
 	List<String> vegan=new ArrayList<String>();
 	List<String> resultjainlst=new ArrayList<String>();
 	List<String> jainlst=new ArrayList<String>();
+	
+	List<String> resulttoadd=new ArrayList<String>();
+	List<String> toaddlst=new ArrayList<String>();
 	String backurl,recipename,recipeid,foodcategorystr,ingredientstr,recipeurl;
 	 public void getrecipecard() throws InterruptedException, IOException
 	 {
@@ -77,8 +81,9 @@ public class DiabeticRecipePage extends BasePage {
 			//Reading Elimination List.	
 			eleminatelst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(),0);
 			//Travers through each recipes in page.
-			for(int i=0;i<1;i++)
-			{  recipename=recipecards.get(i).getText();
+			for(int i=0;i<3;i++)
+			{  
+			   recipename=recipecards.get(i).getText();
 			   recipeid=RecipeId.get(i).getText();
 			  
 			   recipecards.get(i).click();
@@ -95,7 +100,9 @@ public class DiabeticRecipePage extends BasePage {
 			    foodcategorylst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(),1);
 			    //Write scraped recipe in final list.
 			    if(result.size()==0)
-				{   System.out.println("write on excel");
+				{ 
+			    	ArrayList<String>  recipeinfo= new ArrayList<String>();
+			    	System.out.println("write on excel");
 					recipeinfo.add(recipeid);
 					recipeinfo.add(recipename);
 					/*Filter recipe category*/
@@ -123,6 +130,7 @@ public class DiabeticRecipePage extends BasePage {
 					resultfoodcategory=Baseutils.FilterOperation(foodcategory, foodcategorylst);
 					foodcategorystr=String.join(",", resultfoodcategory);
 					recipeinfo.add(foodcategorystr);
+					
 					ingredientstr=String.join(",",recipeingredient);
 					recipeinfo.add(ingredientstr);
 					recipeinfo.add(Preparationtime.getText());
@@ -131,8 +139,19 @@ public class DiabeticRecipePage extends BasePage {
 					recipeinfo.add(Nutrientvalue.getText());
 					recipeinfo.add("Diabetic");
 					recipeinfo.add(recipeurl);
+					/*To ADD*/
+					 
+					toaddlst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 5);
+					resulttoadd=Baseutils.FilterOperation(ingredientList, toaddlst);
+					if(resulttoadd.size()>0)
+					 recipeinfo.add("YES");
+					else
+					 recipeinfo.add("NO");	
+					/* Add each recipe into final recipelist*/
+					recipeslst.add(recipeinfo);
 					
 				}
+			    recipeingredient.clear();
 			    result.clear();
 			    backurl=ConfigReader.getApplicationUrl()+pgcountDString+pagenumber;
 			    driver.navigate().to(backurl);
@@ -147,8 +166,8 @@ public class DiabeticRecipePage extends BasePage {
 						break;
 			}	//End of pagination.				
 	        }catch (org.openqa.selenium.NoSuchElementException e) {  }
-			System.out.println("RecipeInfo in excel"+recipeinfo);
-			Baseutils.WriteExcel("ScrapedRecipeList", recipeinfo);
+			System.out.println("RecipeInfo in excel"+recipeslst);
+			Baseutils.WriteExcel("ScrapedRecipeList", recipeslst);
 			
 	  }
 	 }

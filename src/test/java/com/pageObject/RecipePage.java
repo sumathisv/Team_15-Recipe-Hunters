@@ -16,12 +16,18 @@ public class RecipePage extends BasePage {
 	}
 	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
 
-	
+	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement HypothyroidLink;
+	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
+	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
+
 	public void DiabeticLinkClick()
 	{
 		recipesDiabeticLink.click();
 	}
-	
+	public void HypothyroidLinkClick()
+	{
+		HypothyroidLink.click();
+	}
 	
 	
 	
