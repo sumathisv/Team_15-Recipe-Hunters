@@ -2,16 +2,16 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-12-14T11:44:39 GMT-05:00" name="Default suite" finished-at="2023-12-14T11:48:37 GMT-05:00" duration-ms="237094">
+  <suite started-at="2023-12-15T00:32:58 GMT-05:00" name="Default suite" finished-at="2023-12-15T00:41:48 GMT-05:00" duration-ms="530423">
     <groups>
     </groups>
-    <test started-at="2023-12-14T11:44:39 GMT-05:00" name="Default test" finished-at="2023-12-14T11:48:37 GMT-05:00" duration-ms="237094">
+    <test started-at="2023-12-15T00:32:58 GMT-05:00" name="Default test" finished-at="2023-12-15T00:41:48 GMT-05:00" duration-ms="530423">
       <class name="com.test.RecipeScrapperTest">
-        <test-method is-config="true" signature="launchApplication()[pri:0, instance:com.test.RecipeScrapperTest@3b0fe47a]" started-at="2023-12-14T11:44:40 GMT-05:00" name="launchApplication" finished-at="2023-12-14T11:44:54 GMT-05:00" duration-ms="14572" status="PASS">
+        <test-method is-config="true" signature="launchApplication()[pri:0, instance:com.test.RecipeScrapperTest@663c9e7a]" started-at="2023-12-15T00:32:58 GMT-05:00" name="launchApplication" finished-at="2023-12-15T00:33:49 GMT-05:00" duration-ms="51698" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- launchApplication -->
-        <test-method signature="DiabeticRecipeTest()[pri:0, instance:com.test.RecipeScrapperTest@3b0fe47a]" started-at="2023-12-14T11:44:54 GMT-05:00" name="DiabeticRecipeTest" finished-at="2023-12-14T11:48:37 GMT-05:00" duration-ms="222368" status="PASS">
+        <test-method signature="DiabeticRecipeTest()[pri:0, instance:com.test.RecipeScrapperTest@663c9e7a]" started-at="2023-12-15T00:33:49 GMT-05:00" name="DiabeticRecipeTest" finished-at="2023-12-15T00:41:48 GMT-05:00" duration-ms="478468" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- DiabeticRecipeTest -->

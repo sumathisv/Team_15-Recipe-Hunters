@@ -38,4 +38,26 @@ public class ConfigReader {
 		String url = properties.getProperty("baseURL");
 		return url;
 	}
+	public static String getInputExcel() {
+		String url = properties.getProperty("inputExcel");
+		return url;
+	}
+	
+	public static String Diebatichref() {
+		String url = properties.getProperty("diabeticHref");
+		return url;
+	}
+	
+	public static String hypothyrohref() {
+		String url = properties.getProperty("hypothyroHref");
+		return url;
+	}
+	public static String hypertensionhref() {
+		String url = properties.getProperty("hypertensionHref");
+		return url;
+	}
+	public static String pcoshref() {
+		String url = properties.getProperty("pcosHref");
+		return url;
+	}
 }

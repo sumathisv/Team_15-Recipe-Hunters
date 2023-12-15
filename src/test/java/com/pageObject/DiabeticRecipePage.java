@@ -32,74 +32,123 @@ public class DiabeticRecipePage extends BasePage {
 		PageFactory.initElements(driver, this);
 
 	}
-	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
+	//@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
+	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@class='rcc_rcpno']/span")})List<WebElement> RecipeId;
+	@FindBy(xpath ="//span[@id='ctl00_cntrightpanel_lblRecipeName']")WebElement RecipeName;
+	@FindBy(xpath ="//p/time[@itemprop='prepTime']")WebElement Preparationtime;
+	@FindBy(xpath ="//p/time[@itemprop='cookTime']")WebElement Cookingtime;
+	@FindBy(xpath ="//span[@id='procsection1']/../ol[@itemprop='recipeInstructions']")WebElement Preparationmethod; 
+	@FindBy(xpath ="//table[@id='rcpnutrients']/tbody/tr")WebElement Nutrientvalue;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='maincontent']/div/div/div[@style='text-align:right;padding-bottom:15px;']/a")})List<WebElement> gotopg;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//span[@class='rcc_recipename']")})List<WebElement> recipecards;
-	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='rcpinglist']/div/span[@itemprop=\"recipeIngredient\"]/a/span")})List<WebElement> ingredientList;
-	
-	String pgcountDString="/recipes-for-indian-diabetic-recipes-370?pageindex=";
-	List<String> result = new ArrayList<String>();
+	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='rcpinglist']/div/span[@itemprop='recipeIngredient']/a/span")})List<WebElement> ingredientList;
+	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='recipe_tags']/a")})List<WebElement> foodcategory;
+
+	String pgcountDString=ConfigReader.Diebatichref();
+	List<String> result=new ArrayList<String>();
+	ArrayList<String> recipeinfo = new ArrayList<String>();
+	List<String> eleminatelst=new ArrayList<String>();
+	List<String> foodcategorylst=new ArrayList<String>();
+	List<String> resultfoodcategory=new ArrayList<String>();
+	List<String> recipeingredient= new ArrayList<String>();
+	List<String> resultnonveglst=new ArrayList<String>();
+	List<String> nonveglst=new ArrayList<String>();
+	List<String> resultveganlst=new ArrayList<String>();
+	List<String> vegan=new ArrayList<String>();
+	List<String> resultjainlst=new ArrayList<String>();
+	List<String> jainlst=new ArrayList<String>();
+	String backurl,recipename,recipeid,foodcategorystr,ingredientstr,recipeurl;
 	 public void getrecipecard() throws InterruptedException, IOException
 	 {
-		 Workbook workbook = new XSSFWorkbook();
-         FileOutputStream fos = new FileOutputStream("ScrapedEliminatedList.xls");
-        Sheet sheet = workbook.createSheet();
-        String[] heading={"RecipeID","RecipeName","Recipe Category(Breakfast/lunch/snack/dinner)","Food Category(Veg/non-veg/vegan/Jain)","Ingredients","Preparation Time","Cooking Time","Preparation method","Nutrient values","Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)","Recipe URL"};
-        int rowNum = 0;
-        Row rowh=sheet.createRow(rowNum++);
-        int cellNumh = 0;
-        for (String cellData :heading ) {
-            Cell cell = rowh.createCell(cellNumh++);
-            cell.setCellValue(cellData);
-        	}
-		 int pagenumber=Integer.parseInt(gotopg.get(0).getText());
-			WebElement testclick= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+pgcountDString+pagenumber+"\""+"]"));
-			Thread.sleep(2000);
-			testclick.click();
+		 //Getting 1st Page.
+		    int pagenumber=Integer.parseInt(gotopg.get(0).getText());
+		   
+			WebElement pageclick= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+pgcountDString+pagenumber+"\""+"]"));
+			Baseutils.explicit_wait(driver, pageclick);
+			pageclick.click();
 			int j=0;
+			//pagination-->page Traversal
 			try {
 			while(j<2)
 			{	
 				j++;
-				pagenumber=pagenumber+1;
-			
+				pagenumber=pagenumber+1;			
 			/*Click each recipe and compare with eliminated list*/
-			List<String> eleminatelst=Baseutils.readExcelEliminate("C:\\Users\\Viru\\git\\Team_15-Recipe-Hunters\\src\\test\\resources\\EliminatedInputData\\Eliminatelist.xlsx",0);
-			//System.out.println("Recipecards size"+recipecards.size());
-			
-				//recipecards loop checking for 1 card
+			//Reading Elimination List.	
+			eleminatelst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(),0);
+			//Travers through each recipes in page.
 			for(int i=0;i<1;i++)
-			{  
-			    recipecards.get(i).click();
-			    for (String item : eleminatelst) 
-					{  
-					if(ingredientList.stream().filter(s->s.getText().contains(item)).count()>0)
-					{	
-							result.add(item);
-					}
-				
-					}	
+			{  recipename=recipecards.get(i).getText();
+			   recipeid=RecipeId.get(i).getText();
+			  
+			   recipecards.get(i).click();
+			   recipeurl=driver.getCurrentUrl();
+			   for(int t=0;t<ingredientList.size();t++)	
+			   {
+				   recipeingredient.add(ingredientList.get(t).getText());
+			   }
+			   
+			   	//Filter for Elimination List.    
+			    result=Baseutils.FilterOperation(ingredientList, eleminatelst);
 			    System.out.println(result);
+			    //Readind for food category inputlist.
+			    foodcategorylst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(),1);
+			    //Write scraped recipe in final list.
 			    if(result.size()==0)
-				{
-					System.out.println("write on excel");
+				{   System.out.println("write on excel");
+					recipeinfo.add(recipeid);
+					recipeinfo.add(recipename);
+					/*Filter recipe category*/
+					nonveglst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 2);
+					resultnonveglst=Baseutils.FilterOperation(ingredientList, nonveglst);
+					if(resultnonveglst.size()>0)
+					{recipeinfo.add("Non-Veg");
+					}
+					else	{
+						vegan=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 3);
+						resultveganlst=Baseutils.FilterOperation(ingredientList, vegan);
+						if(resultveganlst.size()>0)
+						{
+							jainlst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 4);
+							resultjainlst=Baseutils.FilterOperation(ingredientList, jainlst);
+							if(resultjainlst.size()>0)
+							{recipeinfo.add("Veg");}
+							else
+							{recipeinfo.add("jain");}
+						}
+						else{recipeinfo.add("vegan");
+						}						
+					}
+					
+					resultfoodcategory=Baseutils.FilterOperation(foodcategory, foodcategorylst);
+					foodcategorystr=String.join(",", resultfoodcategory);
+					recipeinfo.add(foodcategorystr);
+					ingredientstr=String.join(",",recipeingredient);
+					recipeinfo.add(ingredientstr);
+					recipeinfo.add(Preparationtime.getText());
+					recipeinfo.add(Cookingtime.getText());
+					recipeinfo.add(Preparationmethod.getText());
+					recipeinfo.add(Nutrientvalue.getText());
+					recipeinfo.add("Diabetic");
+					recipeinfo.add(recipeurl);
+					
 				}
 			    result.clear();
-			    driver.navigate().back();
-			    driver.navigate().back();
-			    Thread.sleep(2000);
-			}
-			
-			WebElement testclick1= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+pgcountDString+pagenumber+"\""+"]"));
-					if(testclick1.isDisplayed())
-					{	Thread.sleep(1000);
-					   testclick1.click();									
+			    backurl=ConfigReader.getApplicationUrl()+pgcountDString+pagenumber;
+			    driver.navigate().to(backurl);
+			    Thread.sleep(1000);
+			}//End:Travers through each recipes in page.
+			WebElement pageclick1= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+pgcountDString+pagenumber+"\""+"]"));
+					if(pageclick1.isDisplayed())
+					{	Baseutils.explicit_wait(driver, pageclick1);
+					   pageclick1.click();									
 					}
 					else
 						break;
-			}					
-	 }catch (org.openqa.selenium.NoSuchElementException e) {  	  }
-			workbook.write(fos);
-			workbook.close();
-	 }
+			}	//End of pagination.				
+	        }catch (org.openqa.selenium.NoSuchElementException e) {  }
+			System.out.println("RecipeInfo in excel"+recipeinfo);
+			Baseutils.WriteExcel("ScrapedRecipeList", recipeinfo);
+			
+	  }
 	 }

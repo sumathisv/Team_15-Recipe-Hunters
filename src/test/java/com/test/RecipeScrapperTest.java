@@ -1,5 +1,9 @@
 package com.test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.testng.annotations.Test;
 
 import com.pageObject.DiabeticRecipePage;
@@ -18,6 +22,5 @@ public class RecipeScrapperTest extends Baseutils {
 		recipepg.DiabeticLinkClick();
 		diabeticpg.getrecipecard();
 	}
-	
 
 }
