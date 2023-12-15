@@ -38,7 +38,7 @@ public class DiabeticRecipePage extends BasePage {
 	@FindBy(xpath ="//p/time[@itemprop='prepTime']")WebElement Preparationtime;
 	@FindBy(xpath ="//p/time[@itemprop='cookTime']")WebElement Cookingtime;
 	@FindBy(xpath ="//span[@id='procsection1']/../ol[@itemprop='recipeInstructions']")WebElement Preparationmethod; 
-	@FindBy(xpath ="//table[@id='rcpnutrients']/tbody/tr")WebElement Nutrientvalue;
+	@FindBy(xpath ="//table[@id='rcpnutrients']/tbody/tr")List<WebElement> Nutrientvalue;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='maincontent']/div/div/div[@style='text-align:right;padding-bottom:15px;']/a")})List<WebElement> gotopg;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//span[@class='rcc_recipename']")})List<WebElement> recipecards;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='rcpinglist']/div/span[@itemprop='recipeIngredient']/a/span")})List<WebElement> ingredientList;
@@ -58,10 +58,10 @@ public class DiabeticRecipePage extends BasePage {
 	List<String> vegan=new ArrayList<String>();
 	List<String> resultjainlst=new ArrayList<String>();
 	List<String> jainlst=new ArrayList<String>();
-	
+	List<String> allNutrientvalue= new ArrayList<String>();
 	List<String> resulttoadd=new ArrayList<String>();
 	List<String> toaddlst=new ArrayList<String>();
-	String backurl,recipename,recipeid,foodcategorystr,ingredientstr,recipeurl;
+	String backurl,recipename,recipeid,foodcategorystr,ingredientstr,recipeurl, allNutrientvaluestr;
 	 public void getrecipecard() throws InterruptedException, IOException
 	 {
 		 //Getting 1st Page.
@@ -93,6 +93,10 @@ public class DiabeticRecipePage extends BasePage {
 				   recipeingredient.add(ingredientList.get(t).getText());
 			   }
 			   
+			   for(int t=0;t<Nutrientvalue.size();t++)	
+			   {
+				   allNutrientvalue.add(Nutrientvalue.get(t).getText());
+			   }
 			   	//Filter for Elimination List.    
 			    result=Baseutils.FilterOperation(ingredientList, eleminatelst);
 			    System.out.println(result);
@@ -136,7 +140,8 @@ public class DiabeticRecipePage extends BasePage {
 					recipeinfo.add(Preparationtime.getText());
 					recipeinfo.add(Cookingtime.getText());
 					recipeinfo.add(Preparationmethod.getText());
-					recipeinfo.add(Nutrientvalue.getText());
+					allNutrientvaluestr=String.join(",",allNutrientvalue);
+					recipeinfo.add(allNutrientvaluestr);
 					recipeinfo.add("Diabetic");
 					recipeinfo.add(recipeurl);
 					/*To ADD*/
@@ -152,6 +157,7 @@ public class DiabeticRecipePage extends BasePage {
 					
 				}
 			    recipeingredient.clear();
+			    allNutrientvalue.clear();
 			    result.clear();
 			    backurl=ConfigReader.getApplicationUrl()+pgcountDString+pagenumber;
 			    driver.navigate().to(backurl);

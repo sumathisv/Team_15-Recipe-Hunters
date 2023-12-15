@@ -5,8 +5,8 @@
     <classes>
       <class name="com.test.RecipeScrapperTest">
         <methods>
-          <include name="launchApplication"/>
           <include name="DiabeticRecipeTest"/>
+          <include name="launchApplication"/>
         </methods>
       </class> <!-- com.test.RecipeScrapperTest -->
     </classes>
