@@ -22,5 +22,4 @@ public class RecipeScrapperTest extends Baseutils {
 		recipepg.DiabeticLinkClick();
 		diabeticpg.getrecipecard();
 	}
-
 }
