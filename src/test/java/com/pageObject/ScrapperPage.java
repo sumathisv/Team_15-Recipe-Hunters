@@ -103,7 +103,7 @@ public class ScrapperPage {
 				if (result.size() == 0) {
 					ArrayList<String> recipeinfo = new ArrayList<String>();
 					ArrayList<String> allergierecipeinfo = new ArrayList<String>();
-
+                try {
 					recipecategorystr = Baseutils.recipeCategory();
 					resultfoodcategory = Baseutils.FilterOperation(foodcategory, foodcategorylst);
 					System.out.println(resultfoodcategory);
@@ -121,8 +121,10 @@ public class ScrapperPage {
 							recipecategorystr, ingredientstr, Preparationtime.getText(), Cookingtime.getText(),
 							Preparationmethod.getText(), allNutrientvaluestr, morbidity, hypothroidRecipeURL, toaddstr);
 					recipeslst.add(recipeinfo);
+                
 					/*---------------------------------------------------------*/
 					/* Add allergie recipe to allergielist */
+               
 					allergieslst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 0, "Sheet3");
 					resultallergies = Baseutils.FilterOperation(ingredientList, allergieslst);
 
@@ -141,6 +143,10 @@ public class ScrapperPage {
 						allergierecipeinfo.add("No Allergies");
 						allergierecipeslst.add(allergierecipeinfo);
 					}
+                }catch(org.openqa.selenium.NoSuchElementException e){
+                	e.printStackTrace();
+                	
+                }
 				}
 				recipeingredient.clear();
 				allNutrientvalue.clear();
