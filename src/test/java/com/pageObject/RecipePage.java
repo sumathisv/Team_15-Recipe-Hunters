@@ -16,7 +16,7 @@ public class RecipePage extends BasePage {
 	}
 	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
 
-	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement HypothyroidLink;
+	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht211']")	WebElement HypothyroidismLink;
 	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink1;
 	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink2;
 
@@ -26,7 +26,7 @@ public class RecipePage extends BasePage {
 	}
 	public void HypothyroidLinkClick()
 	{
-		HypothyroidLink.click();
+		HypothyroidismLink.click();
 	}
 	
 	
