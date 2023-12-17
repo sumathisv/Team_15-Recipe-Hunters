@@ -8,7 +8,9 @@ import org.testng.annotations.Test;
 
 import com.pageObject.DiabeticRecipePage;
 import com.pageObject.RecipePage;
+import com.pageObject.ScrapperPage;
 import com.utils.Baseutils;
+import com.utils.ConfigReader;
 
 public class RecipeScrapperTest extends Baseutils {
 
@@ -18,8 +20,13 @@ public class RecipeScrapperTest extends Baseutils {
 	{
 	RecipePage recipepg=new RecipePage(driver);
 	DiabeticRecipePage diabeticpg=new DiabeticRecipePage(driver);
+	ScrapperPage scrapperpg = new ScrapperPage(driver);
+		landingpage.clickRecipeButton();
+		recipepg.PCOSLinkClick();
+//		diabeticpg.getrecipecard();
+		scrapperpg.getrecipecard(ConfigReader.pcoshref(), "PCOS");
 		landingpage.clickRecipeButton();
 		recipepg.DiabeticLinkClick();
-		diabeticpg.getrecipecard();
+		scrapperpg.getrecipecard(ConfigReader.Diebatichref(), "Diabetics");
 	}
 }
