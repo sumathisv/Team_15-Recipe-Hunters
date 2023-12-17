@@ -5,10 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.How;
@@ -17,10 +15,9 @@ import org.openqa.selenium.support.PageFactory;
 import com.utils.Baseutils;
 import com.utils.ConfigReader;
 
-public class DiabeticRecipePage extends BasePage {
-
+public class HypertensionRecipePage extends BasePage {
 	public WebDriver driver;
-	public DiabeticRecipePage(WebDriver driver) {
+	public HypertensionRecipePage(WebDriver driver) {
 		super(driver);
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
@@ -38,7 +35,7 @@ public class DiabeticRecipePage extends BasePage {
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='rcpinglist']/div/span[@itemprop='recipeIngredient']/a/span")})List<WebElement> ingredientList;
 	@FindBys(value = {@FindBy(how=How.XPATH,using="//div[@id='recipe_tags']/a")})List<WebElement> foodcategory;
 
-	String pgcountDString=ConfigReader.Diebatichref();
+	String pgcountDString=ConfigReader.hypertensionhref();
 	List<String> result=new ArrayList<String>();
 	
 	 ArrayList<ArrayList<String> > recipeslst = new ArrayList<ArrayList<String>>(); 
@@ -82,11 +79,11 @@ public class DiabeticRecipePage extends BasePage {
 //			//Travers through each recipes in page.
  	int pagenumber=2;
  	//pagenumber=Baseutils.SearchPageCount(gotopg, pgcountDString);
-	for(int p=2;p<=pagenumber;p++)	
+	for(int p=1;p<=pagenumber;p++)	
 	{ 
 		WebElement pageclick1= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+pgcountDString+p+"\""+"]"));
 	     pageclick1.click();
-			for(int i=0;i<10;i++)
+			for(int i=0;i<2;i++)
 			{  
 				System.out.println("Number of recipe in page"+recipecards.size());
 			   recipename=recipecards.get(i).getText();
@@ -99,7 +96,6 @@ public class DiabeticRecipePage extends BasePage {
 				   {recipeingredient.add(ingredientList.get(t).getText());   }
 				   for(int t=0;t<Nutrientvalue.size();t++)	
 				   {  allNutrientvalue.add(Nutrientvalue.get(t).getText());   }
-				   eleminatelst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(),0);   
 			   	//Filter for Elimination List.    
 			    result=Baseutils.FilterOperation(ingredientList, eleminatelst);
 			    System.out.println(result);
@@ -112,13 +108,11 @@ public class DiabeticRecipePage extends BasePage {
 			    	System.out.println("write on excel");
 					/*Filter recipe category*/
 					nonveglst=Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 2);
-					resultnonveglst=Baseutils.FilterOperationFoodCategory(ingredientList, nonveglst);
+					resultnonveglst=Baseutils.FilterOperation(ingredientList, nonveglst);
 					if(resultnonveglst.size()>0)
 					{ for(int v=0;v<resultnonveglst.size();v++)
-						{	System.out.println("inside food category:"+resultnonveglst.get(v));
-						if(resultnonveglst.get(v).contains("eggplant"))
-							{recipecategorystr="Veg";
-							break;}						
+						{	if(resultnonveglst.get(v).equalsIgnoreCase("eggplant"))
+							{recipecategorystr="Veg";}						
 							else
 							{recipecategorystr="Non-Veg";}
 						}

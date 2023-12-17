@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.utils.Baseutils;
+
 public class RecipePage extends BasePage {
 
 	public WebDriver driver;
@@ -16,9 +18,9 @@ public class RecipePage extends BasePage {
 	}
 	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
 
-	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement HypothyroidLink;
-	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink1;
-	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink2;
+	@FindBy(xpath = "//a[contains(text(),'Hypothyroidism Diet')]")	WebElement HypothyroidLink;
+	@FindBy(xpath = "//a[contains(text(),'High Blood Pressure')]")	WebElement HypertensionLink;
+	@FindBy(xpath = "//a[contains(text(),'PCOS')]")	WebElement PCOSLink;
 
 	public void DiabeticLinkClick()
 	{
@@ -26,9 +28,21 @@ public class RecipePage extends BasePage {
 	}
 	public void HypothyroidLinkClick()
 	{
+		
 		HypothyroidLink.click();
 	}
 	
+	
+	public void HypertensionLinkClick()
+	{Baseutils.explicit_wait(driver, HypertensionLink);
+		HypertensionLink.click();
+	}
+	
+	
+	public void PCOSLinkClick()
+	{
+		PCOSLink.click();
+	}
 	
 	
 }

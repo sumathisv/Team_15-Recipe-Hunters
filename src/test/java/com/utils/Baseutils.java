@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -26,6 +27,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeMethod;
 
+import com.google.common.collect.Table.Cell;
 import com.pageObject.LandingPage;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -124,7 +126,8 @@ public class Baseutils {
 	        	org.apache.poi.ss.usermodel.Sheet sheet = workbook.getSheetAt(0); // Assuming you are working with the first sheet
 	        	try {
 	        	for (Row row : sheet) {
-	        		data.add(row.getCell(cellno).toString());
+	        		if (row.getCell(cellno).getStringCellValue() != null &&  row.getCell(cellno).getStringCellValue().length() != 0) 
+	        		{data.add(row.getCell(cellno).toString());}
 	            }	
 	        	}
 	        	catch (java.lang.NullPointerException e) {
@@ -142,9 +145,26 @@ public class Baseutils {
    public static List<String> FilterOperation(List<WebElement> weblst,List<String> comparelst)
    {   List<String> result = new ArrayList<String>();
 	   for (String item : comparelst) 
-		{ if(weblst.stream().filter(s->s.getText().contains(item)||s.getText().equalsIgnoreCase(item)).count()>0)
-			{result.add(item);}				
+		{ if(weblst.stream().filter(s->s.getText().contains(item)).count()>0)
+			{
+				result.add(item);}				
 		}	
+	  return result;
+   }
+   
+   public static List<String> FilterOperationFoodCategory(List<WebElement> weblst,List<String> comparelst)
+   {   List<String> result = new ArrayList<String>();
+   		List<String> webitemlst1 = new ArrayList<String>();
+   		webitemlst1=weblst.stream().filter(s->s.getText()!=null).map(s->s.getText()).collect(Collectors.toList());
+	  System.out.println("Inside filerOpertation webelement text");
+   		for (String item : comparelst) 
+	   {   
+		   if(webitemlst1.stream().filter(s->s.contains(item)).count()>0)
+			{
+			result.addAll(webitemlst1);
+			}				
+		}	
+		
 	  return result;
    }
    
