@@ -27,6 +27,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeMethod;
 
 import com.pageObject.LandingPage;
+import com.pageObject.ScrapperPage;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -34,6 +35,18 @@ public class Baseutils {
 
 	public static WebDriver driver;
 	public static LandingPage landingpage;
+	public static ScrapperPage scrapperpg;
+
+	public static List<String> recipeingredient = new ArrayList<String>();
+	public static List<String> allNutrientvalue = new ArrayList<String>();
+	public static List<String> nonveglst = new ArrayList<String>();
+	public static List<String> resultnonveglst = new ArrayList<String>();
+	public static List<String> vegan = new ArrayList<String>();
+	public static List<String> resultveganlst = new ArrayList<String>();
+	public static List<String> resultjainlst = new ArrayList<String>();
+	public static List<String> jainlst = new ArrayList<String>();
+	static String recipecategorystr;
+	static String toaddstr;
 
 	public static WebDriver initializeDrivers() throws Throwable {
 
@@ -78,12 +91,16 @@ public class Baseutils {
 		// Initialize driver from driver factory
 
 		driver = initializeDrivers();
-
+		scrapperpg = new ScrapperPage(driver);
 		landingpage = new LandingPage(driver);
 		landingpage.landingWebSite();
 		return landingpage;
 	}
 
+	public static WebDriver getdriver() throws Throwable {
+		driver = initializeDrivers();
+		return driver;
+	}
 	// @AfterMethod
 	// public static void after() {
 	// driver.close();
@@ -236,4 +253,62 @@ public class Baseutils {
 		FOS.close();
 	}
 
+	public static List<String> getRecipeIngredientList() {
+		List<WebElement> ingredientList = scrapperpg.ingredientListWebElement();
+		for (int t = 0; t < ingredientList.size(); t++) {
+			recipeingredient.add(ingredientList.get(t).getText());
+		}
+		return recipeingredient;
+	}
+
+	public static List<String> getNutrientvalues() {
+		List<WebElement> Nutrientvalue = scrapperpg.nutrientvalueWebElement();
+		for (int g = 0; g < Nutrientvalue.size(); g++) {
+			allNutrientvalue.add(Nutrientvalue.get(g).getText());
+		}
+		return allNutrientvalue;
+	}
+
+	public static String recipeCategory() throws IOException {
+
+		System.out.println("write on excel");
+		List<WebElement> ingredientList = scrapperpg.ingredientListWebElement();
+		/* Filter recipe category */
+		nonveglst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 0, "Sheet2");
+		resultnonveglst = Baseutils.FilterOperation(ingredientList, nonveglst);
+		if (resultnonveglst.size() > 0) {
+
+			if (resultnonveglst.size() == 1) {
+
+				if (resultnonveglst.get(0).equalsIgnoreCase("egg") || resultnonveglst.get(0).equalsIgnoreCase("eggs")) {
+					recipecategorystr = "Eggitarian";
+				} else
+					recipecategorystr = "Non-Veg";
+			}
+			recipecategorystr = "Non-Veg";
+		} else {
+			vegan = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 1, "Sheet2");
+			resultveganlst = Baseutils.FilterOperation(ingredientList, vegan);
+			if (resultveganlst.size() > 0) {
+				jainlst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 2, "Sheet2");
+				resultjainlst = Baseutils.FilterOperation(ingredientList, jainlst);
+				if (resultjainlst.size() > 0)
+					recipecategorystr = "Vegetarian";
+				else
+					recipecategorystr = "jain";
+			} else
+				recipecategorystr = "vegan";
+		}
+
+		return recipecategorystr;
+	}
+
+	public static String toAdd(List<String> resulttoadd) {
+		if (resulttoadd.size() > 0)
+			toaddstr = "YES";
+		else
+			toaddstr = "NO";
+
+		return toaddstr;
+	}
 }

@@ -15,11 +15,11 @@ import org.openqa.selenium.support.PageFactory;
 import com.utils.Baseutils;
 import com.utils.ConfigReader;
 
-public class DiabeticRecipePage extends BasePage {
+public class DiabeticRecipePage  {
 
 	public WebDriver driver;
 	public DiabeticRecipePage(WebDriver driver) {
-		super(driver);
+		
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 

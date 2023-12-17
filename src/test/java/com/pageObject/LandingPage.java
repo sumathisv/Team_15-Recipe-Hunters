@@ -7,10 +7,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.utils.ConfigReader;
 
-public class LandingPage extends BasePage{
+public class LandingPage {
 	public WebDriver driver;
 	public LandingPage(WebDriver driver) {
-		super(driver);
+		
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 
