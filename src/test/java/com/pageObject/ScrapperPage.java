@@ -81,7 +81,7 @@ public class ScrapperPage extends BasePage {
 //			//Travers through each recipes in page.
  	int pagenumber=0;
  	pagenumber=Baseutils.SearchPageCount(gotopg, pgcountDString);
-	for(int p=1;p<=1;p++)	
+	for(int p=1;p<=pagenumber;p++)	
 	{ 
 		WebElement pageclick1= driver.findElement(By.xpath("//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="+"\""+pgcountDString+p+"\""+"]"));
 	     pageclick1.click();
