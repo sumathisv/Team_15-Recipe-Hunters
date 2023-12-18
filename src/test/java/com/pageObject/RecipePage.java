@@ -15,11 +15,9 @@ public class RecipePage  {
 
 	}
 	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink;
-
 	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht211']")	WebElement HypothyroidismLink;
-	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink1;
-	@FindBy(xpath = "//a[contains(text(),'Diabetic recipes')]")	WebElement recipesDiabeticLink2;
-
+	@FindBy(xpath = "//a[contains(text(),'PCOS')]")	WebElement recipesPCOSLink;
+	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht152']")	WebElement recipesHypertensionLink;
 	public void DiabeticLinkClick()
 	{
 		recipesDiabeticLink.click();
@@ -27,6 +25,14 @@ public class RecipePage  {
 	public void HypothyroidLinkClick()
 	{
 		HypothyroidismLink.click();
+	}
+	public void PCOSLinkClick()
+	{
+		recipesPCOSLink.click();
+	}
+	public void HypertensionLinkClick()
+	{
+		recipesHypertensionLink.click();
 	}
 	
 	

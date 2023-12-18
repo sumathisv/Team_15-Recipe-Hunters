@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -24,7 +25,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 
 import com.pageObject.LandingPage;
 import com.pageObject.ScrapperPage;
@@ -63,9 +67,10 @@ public class Baseutils {
 				ChromeOptions options = new ChromeOptions();
 				// options.addArguments("--remote-allow-origins=*");
 
+				options.addArguments("--headless");
+
 				WebDriverManager.chromedriver().setup();
 				driver = new ChromeDriver(options);
-
 			} else if (browser.equalsIgnoreCase("safari")) {
 
 				WebDriverManager.safaridriver().setup();
@@ -85,7 +90,7 @@ public class Baseutils {
 		return driver;
 	}
 
-	@BeforeMethod
+	@BeforeTest
 	public static LandingPage launchApplication() throws Throwable {
 
 		// Initialize driver from driver factory
@@ -101,12 +106,13 @@ public class Baseutils {
 		driver = initializeDrivers();
 		return driver;
 	}
-	// @AfterMethod
-	// public static void after() {
-	// driver.close();
-	// }
+	
+	@AfterTest
+	 public static void after() {
+	 driver.close();
+	 }
 
-	public static int SearchPageCount(List<WebElement> ele, String s) throws InterruptedException, IOException {
+	/*public static int SearchPageCount(List<WebElement> ele, String s) throws InterruptedException, IOException {
 		int pagenumber = Integer.parseInt(ele.get(0).getText());
 		WebElement testclick = driver.findElement(By.xpath(
 				"//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="
@@ -130,9 +136,8 @@ public class Baseutils {
 		} catch (org.openqa.selenium.NoSuchElementException e) {
 		}
 		return pagenumber;
-	}
-	// Write into Excel.
-
+	}*/
+	
 	// Input Excel reader.
 	public static List<String> readExcelEliminate(String filePath, int cellno, String sheetname) throws IOException {
 		List<String> data = new ArrayList<>();
@@ -173,7 +178,7 @@ public class Baseutils {
 	public static ArrayList<String> additem(String rid, String rnme, String rfc, String rrc, String rin, String rpt,
 			String rct, String rpm, String rnv, String rmc, String rurl, String roa) {
 		ArrayList<String> templist = new ArrayList<String>();
-		templist.add(rid);
+		templist.add(rid.substring(0, 12));
 		templist.add(rnme);
 		templist.add(rfc);
 		templist.add(rrc);
@@ -268,25 +273,41 @@ public class Baseutils {
 		}
 		return allNutrientvalue;
 	}
+	public static List<String> FilterOperationFoodCategory(List<WebElement> weblst,List<String> comparelst)
+	   {   List<String> result = new ArrayList<String>();
+	   		List<String> webitemlst1 = new ArrayList<String>();
+	   		webitemlst1=weblst.stream().filter(s->s.getText()!=null).map(s->s.getText()).collect(Collectors.toList());
+				for (String item : comparelst) 
+		   {   
+			   if(webitemlst1.stream().filter(s->s.contains(item)).count()>0)
+				{
+				result.addAll(webitemlst1);
+				}				
+			}	
+			
+		  return result;
+	   }
 
 	public static String recipeCategory() throws IOException {
 
-		System.out.println("write on excel");
+		//System.out.println("write on excel");
 		List<WebElement> ingredientList = scrapperpg.ingredientListWebElement();
 		/* Filter recipe category */
 		nonveglst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 0, "Sheet2");
-		resultnonveglst = Baseutils.FilterOperation(ingredientList, nonveglst);
+		resultnonveglst = Baseutils.FilterOperationFoodCategory(ingredientList, nonveglst);
+		long egglist=resultnonveglst.stream().filter(s->s.equalsIgnoreCase("egg")||s.equalsIgnoreCase("eggs")).count();
 		if (resultnonveglst.size() > 0) {
-
-			if (resultnonveglst.size() == 1) {
-
-				if (resultnonveglst.get(0).equalsIgnoreCase("egg") || resultnonveglst.get(0).equalsIgnoreCase("eggs")) {
-					recipecategorystr = "Eggitarian";
-				} else
-					recipecategorystr = "Non-Veg";
+			if(egglist>0)
+			{recipecategorystr="Eggetarian";}
+			else
+			{recipecategorystr="Non-Veg";}
+			for(int v=0;v<resultnonveglst.size();v++)
+			{	
+			if(resultnonveglst.get(v).contains("eggplant"))
+				{recipecategorystr="Vegetarian";
+				break;}		}
 			}
-			recipecategorystr = "Non-Veg";
-		} else {
+		else {
 			vegan = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 1, "Sheet2");
 			resultveganlst = Baseutils.FilterOperation(ingredientList, vegan);
 			if (resultveganlst.size() > 0) {
@@ -299,7 +320,6 @@ public class Baseutils {
 			} else
 				recipecategorystr = "vegan";
 		}
-
 		return recipecategorystr;
 	}
 
@@ -308,7 +328,73 @@ public class Baseutils {
 			toaddstr = "YES";
 		else
 			toaddstr = "NO";
-
 		return toaddstr;
 	}
+	
+	
+	public static void WriteExcelIntermediate(String ExcelSheetName, ArrayList<String> recipefinallst)
+			throws IOException {
+		XSSFWorkbook workbook = new XSSFWorkbook();
+		XSSFSheet sheet = workbook.createSheet(ExcelSheetName);
+
+		XSSFFont font = workbook.createFont();
+		CellStyle style = null;
+		font.setBold(true);
+		int rows = sheet.getPhysicalNumberOfRows();
+		if (ExcelSheetName.equals("ScrapedRecipeListIntermediate")) {
+			if (rows == 0) {
+				sheet.createRow(0);
+				sheet.getColumnStyle(0).setFont(font);
+				sheet.getRow(0).createCell(0).setCellValue("RecipeId");
+				sheet.getRow(0).createCell(1).setCellValue("Recipe Name");
+				sheet.getRow(0).createCell(2).setCellValue("Food Category(Veg/non-veg/vegan/Jain)");
+				sheet.getRow(0).createCell(3).setCellValue("Recipe Category(Breakfast/lunch/snack/dinner)");
+				sheet.getRow(0).createCell(4).setCellValue("Ingredients");
+				sheet.getRow(0).createCell(5).setCellValue("Preparation Time");
+				sheet.getRow(0).createCell(6).setCellValue("Cooking Time");
+				sheet.getRow(0).createCell(7).setCellValue("Preparation method");
+				sheet.getRow(0).createCell(8).setCellValue("Nutrient values");
+				sheet.getRow(0).createCell(9)
+						.setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
+				sheet.getRow(0).createCell(10).setCellValue("Recipe URL");
+				sheet.getRow(0).createCell(11).setCellValue("To Add");
+			}
+		} else {
+			if (rows == 0) {
+				sheet.createRow(0);
+				sheet.getColumnStyle(0).setFont(font);
+				sheet.getRow(0).createCell(0).setCellValue("RecipeId");
+				sheet.getRow(0).createCell(1).setCellValue("Recipe Name");
+				sheet.getRow(0).createCell(2).setCellValue("Food Category(Veg/non-veg/vegan/Jain)");
+				sheet.getRow(0).createCell(3).setCellValue("Recipe Category(Breakfast/lunch/snack/dinner)");
+				sheet.getRow(0).createCell(4).setCellValue("Ingredients");
+				sheet.getRow(0).createCell(5).setCellValue("Preparation Time");
+				sheet.getRow(0).createCell(6).setCellValue("Cooking Time");
+				sheet.getRow(0).createCell(7).setCellValue("Preparation method");
+				sheet.getRow(0).createCell(8).setCellValue("Nutrient values");
+				sheet.getRow(0).createCell(9)
+						.setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
+				sheet.getRow(0).createCell(10).setCellValue("Recipe URL");
+				sheet.getRow(0).createCell(11).setCellValue("To Add");
+				sheet.getRow(0).createCell(12).setCellValue("Allergies_ingerdient");
+			}
+		}
+
+		int rowno = rows + 1;
+
+		for (int i = 0; i < recipefinallst.size(); i++) {
+			XSSFRow row = sheet.createRow(rowno++);
+			row.createCell(i).setCellValue(recipefinallst.get(i));
+			}
+
+		FileOutputStream FOS = new FileOutputStream(".\\src\\test\\resources\\" + ExcelSheetName + ".xlsx");
+		workbook.write(FOS);
+		FOS.close();
+	}
+
+	
+	
+	
+	
+	
 }

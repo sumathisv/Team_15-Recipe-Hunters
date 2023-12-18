@@ -2,7 +2,7 @@ package com.test;
 
 import org.testng.annotations.Test;
 
-import com.pageObject.DiabeticRecipePage;
+
 import com.pageObject.ScrapperPage;
 import com.pageObject.RecipePage;
 import com.utils.Baseutils;
@@ -12,19 +12,37 @@ public class RecipeScrapperTest extends Baseutils {
 
 	
 	@Test
-	public void DiabeticRecipeTest() throws Throwable
+	public void hyothyriodRecipeTest() throws Throwable
 	{
 	RecipePage recipepg=new RecipePage(driver);
-	
-	
-		landingpage.clickRecipeButton();
-		recipepg.DiabeticLinkClick();
-		scrapperpg.scrapperReceipes(ConfigReader.Diebatichref(),"Diebatics", 0, 1);
-		landingpage.clickRecipeButton();
-		recipepg.HypothyroidLinkClick();
-		scrapperpg.scrapperReceipes(ConfigReader.hypothyrohref(),"Hypothyroidism", 2, 3);
-		
-		
+	landingpage.clickRecipeButton();
+	recipepg.HypothyroidLinkClick();
+	scrapperpg.scrapperReceipes(ConfigReader.hypothyrohref(),"Hypothyroidism", 2, 3,"Hypthyriod","AllergyHypothyriod");
 	}
+	
+	@Test	
+	public void diabeticRecipeTest() throws Throwable
+	{
+	RecipePage recipepg=new RecipePage(driver);
+	landingpage.clickRecipeButton();		
+	recipepg.DiabeticLinkClick();
+    scrapperpg.scrapperReceipes(ConfigReader.Diebatichref(),"Diebatics", 0, 1,"Diebatics","AllergyDiebatics");
+  
+	}
+	@Test	
+	public void PCOSRecipeTest() throws Throwable
+	{
+	RecipePage recipepg=new RecipePage(driver);
+	landingpage.clickRecipeButton();		
+	recipepg.PCOSLinkClick();
+    scrapperpg.scrapperReceipes(ConfigReader.Diebatichref(),"PCOS", 6, 7,"PCOS","AllergyPCOS");
+  	}
 
+	public void HypertensionRecipeTest() throws Throwable
+	{
+	RecipePage recipepg=new RecipePage(driver);
+	landingpage.clickRecipeButton();		
+	recipepg.HypertensionLinkClick();
+    scrapperpg.scrapperReceipes(ConfigReader.Diebatichref(),"PCOS", 4, 5,"Hypertension","AllergyHypertension");
+  	}
 }
