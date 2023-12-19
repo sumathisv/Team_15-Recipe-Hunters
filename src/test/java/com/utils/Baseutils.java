@@ -112,32 +112,6 @@ public class Baseutils {
 	 driver.close();
 	 }
 
-	/*public static int SearchPageCount(List<WebElement> ele, String s) throws InterruptedException, IOException {
-		int pagenumber = Integer.parseInt(ele.get(0).getText());
-		WebElement testclick = driver.findElement(By.xpath(
-				"//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="
-						+ "\"" + s + pagenumber + "\"" + "]"));
-		Thread.sleep(2000);
-		testclick.click();
-		try {
-			while (true) {
-				pagenumber = pagenumber + 1;
-				WebElement testclick1 = driver.findElement(By.xpath(
-						"//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="
-								+ "\"" + s + pagenumber + "\"" + "]"));
-				if (testclick1.isDisplayed()) {
-					Thread.sleep(1000);
-					testclick1.click();
-				}
-
-				else
-					break;
-			}
-		} catch (org.openqa.selenium.NoSuchElementException e) {
-		}
-		return pagenumber;
-	}*/
-	
 	// Input Excel reader.
 	public static List<String> readExcelEliminate(String filePath, int cellno, String sheetname) throws IOException {
 		List<String> data = new ArrayList<>();
@@ -203,7 +177,7 @@ public class Baseutils {
 		CellStyle style = null;
 		font.setBold(true);
 		int rows = sheet.getPhysicalNumberOfRows();
-		if (ExcelSheetName.equals("ScrapedRecipeList")) {
+		if (ExcelSheetName.equals("Diebatics")||ExcelSheetName.equals("PCOS")||ExcelSheetName.equals("Hypertension")||ExcelSheetName.equals("Hypothyriod")) {
 			if (rows == 0) {
 				sheet.createRow(0);
 				sheet.getColumnStyle(0).setFont(font);
@@ -330,70 +304,6 @@ public class Baseutils {
 			toaddstr = "NO";
 		return toaddstr;
 	}
-	
-	
-	public static void WriteExcelIntermediate(String ExcelSheetName, ArrayList<String> recipefinallst)
-			throws IOException {
-		XSSFWorkbook workbook = new XSSFWorkbook();
-		XSSFSheet sheet = workbook.createSheet(ExcelSheetName);
-
-		XSSFFont font = workbook.createFont();
-		CellStyle style = null;
-		font.setBold(true);
-		int rows = sheet.getPhysicalNumberOfRows();
-		if (ExcelSheetName.equals("ScrapedRecipeListIntermediate")) {
-			if (rows == 0) {
-				sheet.createRow(0);
-				sheet.getColumnStyle(0).setFont(font);
-				sheet.getRow(0).createCell(0).setCellValue("RecipeId");
-				sheet.getRow(0).createCell(1).setCellValue("Recipe Name");
-				sheet.getRow(0).createCell(2).setCellValue("Food Category(Veg/non-veg/vegan/Jain)");
-				sheet.getRow(0).createCell(3).setCellValue("Recipe Category(Breakfast/lunch/snack/dinner)");
-				sheet.getRow(0).createCell(4).setCellValue("Ingredients");
-				sheet.getRow(0).createCell(5).setCellValue("Preparation Time");
-				sheet.getRow(0).createCell(6).setCellValue("Cooking Time");
-				sheet.getRow(0).createCell(7).setCellValue("Preparation method");
-				sheet.getRow(0).createCell(8).setCellValue("Nutrient values");
-				sheet.getRow(0).createCell(9)
-						.setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
-				sheet.getRow(0).createCell(10).setCellValue("Recipe URL");
-				sheet.getRow(0).createCell(11).setCellValue("To Add");
-			}
-		} else {
-			if (rows == 0) {
-				sheet.createRow(0);
-				sheet.getColumnStyle(0).setFont(font);
-				sheet.getRow(0).createCell(0).setCellValue("RecipeId");
-				sheet.getRow(0).createCell(1).setCellValue("Recipe Name");
-				sheet.getRow(0).createCell(2).setCellValue("Food Category(Veg/non-veg/vegan/Jain)");
-				sheet.getRow(0).createCell(3).setCellValue("Recipe Category(Breakfast/lunch/snack/dinner)");
-				sheet.getRow(0).createCell(4).setCellValue("Ingredients");
-				sheet.getRow(0).createCell(5).setCellValue("Preparation Time");
-				sheet.getRow(0).createCell(6).setCellValue("Cooking Time");
-				sheet.getRow(0).createCell(7).setCellValue("Preparation method");
-				sheet.getRow(0).createCell(8).setCellValue("Nutrient values");
-				sheet.getRow(0).createCell(9)
-						.setCellValue("Targetted morbid conditions (Diabeties/Hypertension/Hypothyroidism)");
-				sheet.getRow(0).createCell(10).setCellValue("Recipe URL");
-				sheet.getRow(0).createCell(11).setCellValue("To Add");
-				sheet.getRow(0).createCell(12).setCellValue("Allergies_ingerdient");
-			}
-		}
-
-		int rowno = rows + 1;
-
-		for (int i = 0; i < recipefinallst.size(); i++) {
-			XSSFRow row = sheet.createRow(rowno++);
-			row.createCell(i).setCellValue(recipefinallst.get(i));
-			}
-
-		FileOutputStream FOS = new FileOutputStream(".\\src\\test\\resources\\" + ExcelSheetName + ".xlsx");
-		workbook.write(FOS);
-		FOS.close();
-	}
-
-	
-	
 	
 	
 	

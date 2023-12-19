@@ -32,6 +32,7 @@ public class ScrapperPage {
 	public ArrayList<ArrayList<String>> recipeslst = new ArrayList<ArrayList<String>>();
 	public ArrayList<ArrayList<String>> allergierecipeslst = new ArrayList<ArrayList<String>>();
 	public List<String> resultallergies = new ArrayList<String>();
+	public List<String> tempresultallergies = new ArrayList<String>();
 	public List<String> allergieslst = new ArrayList<String>();
 	public List<String> nonveglst = new ArrayList<String>();
 	public List<String> resultnonveglst = new ArrayList<String>();
@@ -78,7 +79,7 @@ public class ScrapperPage {
 		pagenumber = Integer.parseInt(pagenumberWeb.getText());
 		eleminatelst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), eliminateCellno, "Sheet1");
 		System.out.println(pagenumber);
-		for (int p = 1; p <= pagenumber-1; p++) {
+		for (int p = 1; p <=pagenumber ; p++) {
 			System.out.println("Page:" + p);
 			WebElement pageclick1 = driver.findElement(By.xpath(
 					"//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="
@@ -110,21 +111,35 @@ public class ScrapperPage {
 					resulttoadd = Baseutils.FilterOperation(ingredientList, toaddlst);
 					toaddstr = Baseutils.toAdd(resulttoadd);
 
+					
+					
 					/* Add each recipe into final recipelist */
 					recipeinfo = Baseutils.additem(recipeID, recipeName, foodcategorystr,
 							recipecategorystr, ingredientstr, Preparationtime.getText(), Cookingtime.getText(),
 							Preparationmethod.getText(), allNutrientvaluestr, morbidity,recipeURL, toaddstr);
-					Baseutils.WriteExcelIntermediate(excelname+"Intermediate", recipeinfo);
+					//Baseutils.WriteExcelIntermediate(excelname+"Intermediate", recipeinfo);
 					recipeslst.add(recipeinfo);
+					
                 	/* Add allergie recipe to allergielist */
                		allergieslst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 0, "Sheet3");
 					resultallergies = Baseutils.FilterOperation(ingredientList, allergieslst);
-					if (resultallergies.size() > 0) {
+					if (resultallergies.size()> 0) {
+						tempresultallergies	=Baseutils.FilterOperationFoodCategory(ingredientList, allergieslst);
+						System.out.println("TempAllergies:"+tempresultallergies);
+						long tempcount=tempresultallergies.stream().filter(s->s.contains("eggplant")).count();
 						allergierecipeinfo = Baseutils.additem(recipeID, recipeName,
-								foodcategorystr, recipecategorystr, ingredientstr, Preparationtime.getText(),
-								Cookingtime.getText(), Preparationmethod.getText(), allNutrientvaluestr, morbidity,
-								recipeURL, toaddstr);
-						allergierecipeinfo.addAll(resultallergies);
+									foodcategorystr, recipecategorystr, ingredientstr, Preparationtime.getText(),
+									Cookingtime.getText(), Preparationmethod.getText(), allNutrientvaluestr, morbidity,
+									recipeURL, toaddstr);
+						if(tempcount==1)
+						{ int indx=resultallergies.indexOf("egg");
+						  resultallergies.remove(indx);
+						  System.out.println("index of egg"+indx);
+						  System.out.println("result after deleting egg"+resultallergies);}
+						if(resultallergies.isEmpty())
+							allergierecipeinfo.add("No Allergies");
+						else
+						{allergierecipeinfo.addAll(resultallergies);}
 						allergierecipeslst.add(allergierecipeinfo);
 					} else {
 						allergierecipeinfo = Baseutils.additem(recipeID, recipeName,
@@ -132,7 +147,7 @@ public class ScrapperPage {
 								Cookingtime.getText(), Preparationmethod.getText(), allNutrientvaluestr, morbidity,
 								recipeURL, toaddstr);
 						allergierecipeinfo.add("No Allergies");
-						Baseutils.WriteExcelIntermediate(Allergyexcelname+"Intermediate", allergierecipeinfo);
+						//Baseutils.WriteExcelIntermediate(Allergyexcelname+"Intermediate", allergierecipeinfo);
 						allergierecipeslst.add(allergierecipeinfo);
 							}
                 }catch(org.openqa.selenium.NoSuchElementException e){
@@ -141,6 +156,7 @@ public class ScrapperPage {
 				}
 				recipeingredient.clear();
 				allNutrientvalue.clear();
+				
 				result.clear();
 				backurl = ConfigReader.getApplicationUrl() + pgcountDString + p;
 				driver.navigate().to(backurl);
@@ -154,9 +170,10 @@ public class ScrapperPage {
         	        alert.accept();
         	    } catch (NoAlertPresentException e) {  }
 		}
-		System.out.println("RecipeInfo in excel" + recipeslst);
 		Baseutils.WriteExcel(excelname, recipeslst);
 		Baseutils.WriteExcel(Allergyexcelname, allergierecipeslst);
+		allergierecipeslst.clear();
+		recipeslst.clear();
 	}
 
 	public List<WebElement> ingredientListWebElement() {

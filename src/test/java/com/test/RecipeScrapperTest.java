@@ -17,7 +17,7 @@ public class RecipeScrapperTest extends Baseutils {
 	RecipePage recipepg=new RecipePage(driver);
 	landingpage.clickRecipeButton();
 	recipepg.HypothyroidLinkClick();
-	scrapperpg.scrapperReceipes(ConfigReader.hypothyrohref(),"Hypothyroidism", 2, 3,"Hypthyriod","AllergyHypothyriod");
+	scrapperpg.scrapperReceipes(ConfigReader.hypothyrohref(),"Hypothyroidism", 2, 3,"Hypothyriod","AllergyHypothyriod");
 	}
 	
 	@Test	
@@ -35,14 +35,14 @@ public class RecipeScrapperTest extends Baseutils {
 	RecipePage recipepg=new RecipePage(driver);
 	landingpage.clickRecipeButton();		
 	recipepg.PCOSLinkClick();
-    scrapperpg.scrapperReceipes(ConfigReader.Diebatichref(),"PCOS", 6, 7,"PCOS","AllergyPCOS");
+    scrapperpg.scrapperReceipes(ConfigReader.pcoshref(),"PCOS", 6, 7,"PCOS","AllergyPCOS");
   	}
-
+@Test
 	public void HypertensionRecipeTest() throws Throwable
 	{
 	RecipePage recipepg=new RecipePage(driver);
 	landingpage.clickRecipeButton();		
 	recipepg.HypertensionLinkClick();
-    scrapperpg.scrapperReceipes(ConfigReader.Diebatichref(),"PCOS", 4, 5,"Hypertension","AllergyHypertension");
+    scrapperpg.scrapperReceipes(ConfigReader.hypertensionhref(),"Hypertension", 4, 5,"Hypertension","AllergyHypertension");
   	}
 }
