@@ -165,8 +165,8 @@ public class ScrapperPage {
 		} 		// End of pagination.
 		}catch (UnhandledAlertException f) {
         	 try {
-        		 WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(15));
-        		 wait.until(ExpectedConditions.alertIsPresent());
+        		// WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(15));
+        		// wait.until(ExpectedConditions.alertIsPresent());
         	        Alert alert = driver.switchTo().alert();
         	        String alertText = alert.getText();
         	        System.out.println("Alert data: " + alertText);
