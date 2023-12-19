@@ -60,4 +60,34 @@ public class ConfigReader {
 		String url = properties.getProperty("pcosHref");
 		return url;
 	}
+	
+	public static String hypothyroindiandinnerHref() {
+		String url = properties.getProperty("indiandinnerHref");
+		return url;
+	}
+	
+	
+	public static String hypertensionsoupHref()
+	{
+		String url = properties.getProperty("soupHref");
+		return url;
+		
+	}
+
+	public static String PCOSindiansaladHref()
+	{
+		String url = properties.getProperty("indiansaladHref");
+		return url;
+		
+	}
+	public static String PCOShighfiberHref()
+	{
+		String url = properties.getProperty("highfiberHref");
+		return url;
+		
+	}
+	
+	
+	
+	
 }

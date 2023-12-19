@@ -18,6 +18,11 @@ public class RecipeScrapperTest extends Baseutils {
 	landingpage.clickRecipeButton();
 	recipepg.HypothyroidLinkClick();
 	scrapperpg.scrapperReceipes(ConfigReader.hypothyrohref(),"Hypothyroidism", 2, 3,"Hypothyriod","AllergyHypothyriod");
+	
+	
+	landingpage.clickRecipeButton();
+	recipepg.IndiandinnerHypothyroidLinkClick();
+	scrapperpg.scrapperReceipes(ConfigReader.hypothyroindiandinnerHref(),"Hypothyroidism", 2, 3,"HypothyriodIndianDinner","AllergyHypothyriodIndianDinner");
 	}
 	
 	@Test	
@@ -36,13 +41,31 @@ public class RecipeScrapperTest extends Baseutils {
 	landingpage.clickRecipeButton();		
 	recipepg.PCOSLinkClick();
     scrapperpg.scrapperReceipes(ConfigReader.pcoshref(),"PCOS", 6, 7,"PCOS","AllergyPCOS");
-  	}
+    
+    
+    landingpage.clickRecipeButton();	
+    recipepg.highfiberPCOSLinkClick();
+    scrapperpg.scrapperReceipes(ConfigReader.PCOShighfiberHref(),"PCOS", 6, 7,"PCOSHighfiber","AllergyPCOSHighfiber");
+    
+    
+    landingpage.clickRecipeButton();	
+    recipepg.indiansaladPCOSLinkClick();
+    scrapperpg.scrapperReceipes(ConfigReader.PCOSindiansaladHref(),"PCOS", 6, 7,"PCOSSalad","AllergyPCOSSalad");
+	}
 @Test
 	public void HypertensionRecipeTest() throws Throwable
 	{
 	RecipePage recipepg=new RecipePage(driver);
 	landingpage.clickRecipeButton();		
+	recipepg.SoupHypertensionLinkClick();
+    scrapperpg.scrapperReceipes(ConfigReader.hypertensionsoupHref(),"Hypertension", 4, 5,"HypertensionSoup","AllergyHypertensionSoup");
+    
+	
+	landingpage.clickRecipeButton();		
 	recipepg.HypertensionLinkClick();
     scrapperpg.scrapperReceipes(ConfigReader.hypertensionhref(),"Hypertension", 4, 5,"Hypertension","AllergyHypertension");
+    
+    
+    
   	}
 }

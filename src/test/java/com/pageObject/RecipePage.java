@@ -18,6 +18,12 @@ public class RecipePage  {
 	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht211']")	WebElement HypothyroidismLink;
 	@FindBy(xpath = "//a[contains(text(),'PCOS')]")	WebElement recipesPCOSLink;
 	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht152']")	WebElement recipesHypertensionLink;
+	
+	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht146']")	WebElement healthysoupHypertensionLink;
+	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht116']")	WebElement indiandinnerHypothyroidismLink;
+	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht133']")	WebElement indiansaladPCOSLink;
+	@FindBy(xpath = "//a[@id='ctl00_cntleftpanel_ttlhealthtree_tvTtlHealtht163']")	WebElement highfiberPCOSLink;
+	
 	public void DiabeticLinkClick()
 	{
 		recipesDiabeticLink.click();
@@ -34,7 +40,23 @@ public class RecipePage  {
 	{
 		recipesHypertensionLink.click();
 	}
+	public void SoupHypertensionLinkClick()
+	{
+		healthysoupHypertensionLink.click();
+	}
+	public void IndiandinnerHypothyroidLinkClick()
+	{
+		indiandinnerHypothyroidismLink.click();
+	}
+	public void indiansaladPCOSLinkClick()
+	{
+		indiansaladPCOSLink.click();
+	}
 	
+	public void highfiberPCOSLinkClick()
+	{
+		highfiberPCOSLink.click();
+	}
 	
 	
 }

@@ -1,6 +1,7 @@
 package com.pageObject;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.utils.Baseutils;
 import com.utils.ConfigReader;
@@ -79,14 +82,14 @@ public class ScrapperPage {
 		pagenumber = Integer.parseInt(pagenumberWeb.getText());
 		eleminatelst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), eliminateCellno, "Sheet1");
 		System.out.println(pagenumber);
-		for (int p = 1; p <=pagenumber ; p++) {
+		for (int p = 1; p<=pagenumber ; p++) {
 			System.out.println("Page:" + p);
 			WebElement pageclick1 = driver.findElement(By.xpath(
 					"//div[@id='maincontent']/div/div[2]//div[@style=\"text-align:right;padding-bottom:15px;\"]/a[@href="
 							+ "\"" + pgcountDString + p + "\"" + "]"));
 			pageclick1.click();
 			for (int i = 0; i < recipecards.size(); i++) {
-				recipeName = recipecards.get(i).getText();
+				recipeName = (recipecards.get(i).getText()).toLowerCase();
 				System.out.println("recipe:" +recipeName);
 				recipeID = RecipeId.get(i).getText();
 				Baseutils.explicit_wait(driver, recipecards.get(i));
@@ -97,7 +100,8 @@ public class ScrapperPage {
 				allNutrientvalue = Baseutils.getNutrientvalues();
 				result = Baseutils.FilterOperation(ingredientList, eleminatelst);
 				foodcategorylst = Baseutils.readExcelEliminate(ConfigReader.getInputExcel(), 0, "sheet4");
-				if (result.size() == 0) {
+				Boolean namecheck=Baseutils.recipeNamecheck(recipeName,eleminatelst);
+				if (result.size() == 0 && !namecheck) {
 					ArrayList<String> recipeinfo = new ArrayList<String>();
 					ArrayList<String> allergierecipeinfo = new ArrayList<String>();
                 try {
@@ -111,8 +115,6 @@ public class ScrapperPage {
 					resulttoadd = Baseutils.FilterOperation(ingredientList, toaddlst);
 					toaddstr = Baseutils.toAdd(resulttoadd);
 
-					
-					
 					/* Add each recipe into final recipelist */
 					recipeinfo = Baseutils.additem(recipeID, recipeName, foodcategorystr,
 							recipecategorystr, ingredientstr, Preparationtime.getText(), Cookingtime.getText(),
@@ -125,7 +127,7 @@ public class ScrapperPage {
 					resultallergies = Baseutils.FilterOperation(ingredientList, allergieslst);
 					if (resultallergies.size()> 0) {
 						tempresultallergies	=Baseutils.FilterOperationFoodCategory(ingredientList, allergieslst);
-						System.out.println("TempAllergies:"+tempresultallergies);
+						//System.out.println("TempAllergies:"+tempresultallergies);
 						long tempcount=tempresultallergies.stream().filter(s->s.contains("eggplant")).count();
 						allergierecipeinfo = Baseutils.additem(recipeID, recipeName,
 									foodcategorystr, recipecategorystr, ingredientstr, Preparationtime.getText(),
@@ -156,7 +158,6 @@ public class ScrapperPage {
 				}
 				recipeingredient.clear();
 				allNutrientvalue.clear();
-				
 				result.clear();
 				backurl = ConfigReader.getApplicationUrl() + pgcountDString + p;
 				driver.navigate().to(backurl);
@@ -164,6 +165,8 @@ public class ScrapperPage {
 		} 		// End of pagination.
 		}catch (UnhandledAlertException f) {
         	 try {
+        		 WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(15));
+        		 wait.until(ExpectedConditions.alertIsPresent());
         	        Alert alert = driver.switchTo().alert();
         	        String alertText = alert.getText();
         	        System.out.println("Alert data: " + alertText);

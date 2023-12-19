@@ -306,5 +306,15 @@ public class Baseutils {
 	}
 	
 	
+	public static Boolean recipeNamecheck(String rname,List<String> eleminatelist)
+	{
+		for (String item : eleminatelist) {
+			if(rname.contains(item))
+			{return true;}
+			}
+		return false;
+		
+	}
+	
 	
 }
